@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTM Civil x Muang Wasadu - Co-design Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100;300;400;600;700&display=swap');
+        body { font-family: 'Anuphan', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        // Lucide Icon Component Wrapper
+        const Icon = ({ name, size = 24, className = "" }) => {
+            const [iconHtml, setIconHtml] = useState("");
+            useEffect(() => {
+                if (window.lucide) {
+                    const icon = window.lucide.icons[name];
+                    if (icon) {
+                        const svg = window.lucide.createIcons({
+                            icons: { [name]: icon },
+                            attrs: { strokeWidth: 2, width: size, height: size, class: className }
+                        });
+                    }
+                }
+            }, [name, size, className]);
+            
+            // Fallback using standard Lucide-react like approach if available, 
+            // but for CDN we use data-lucide attribute
+            return <i data-lucide={name} className={className} style={{width: size, height: size, display: 'inline-block'}}></i>;
+        };
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('proposal');
+
+            useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            }, [activeTab]);
+
+            const skeletonGroups = [
+                {
+                    title: "แบบกล่อง (Flat Roof)",
+                    items: [
+                        { name: "รุ่น 2x2", size: "2.0 x 2.0 x 2.80 ม." },
+                        { name: "รุ่น 3x3", size: "3.0 x 3.0 x 2.80 ม." },
+                        { name: "รุ่น 3x6 (แบน)", size: "3.0 x 6.0 x 2.80 ม." },
+                        { name: "รุ่น 3x7", size: "3.0 x 7.0 x 2.80 ม." },
+                        { name: "รุ่น 4x8", size: "4.0 x 8.0 x 3.00 ม." },
+                    ]
+                },
+                {
+                    title: "แบบจั่ว (Gable / Nordic / Hip)",
+                    items: [
+                        { name: "รุ่น 3x6 (จั่ว)", size: "3.0 x 6.0 x 2.80+2.12 ม." },
+                        { name: "รุ่น 3x6 (ปั้นหยา)", size: "3.0 x 6.0 x 3.00 ม." },
+                        { name: "รุ่น 4x6 (นอร์ดิก)", size: "4.0 x 6.0 x 2.80+2.83 ม." },
+                    ]
+                }
+            ];
+
+            const personas = [
+                { title: "The Entrepreneur", icon: "coffee", color: "text-orange-500", desc: "เจ้าของธุรกิจรุ่นใหม่ที่ต้องการเปิดร้านกาแฟ หรือทำห้องพัก Resort", needs: ["ดีไซน์โดดเด่น", "ติดตั้งไว", "งบชัดเจน"] },
+                { title: "The Garden House", icon: "trees", color: "text-green-500", desc: "ครอบครัวที่ต้องการห้องพักผ่อนในสวน หรือห้องทำงานแยกส่วน", needs: ["กลมกลืนธรรมชาติ", "ระบายอากาศดี", "เป็นส่วนตัว"] },
+                { title: "The Tiny Home", icon: "home", color: "text-blue-500", desc: "วัยทำงานที่อยากมีบ้านหลังเล็กในที่ดินส่วนตัว ฟังก์ชันครบ", needs: ["ฟังก์ชันครบ", "ต่อขยายได้", "ดูแลรักษาง่าย"] }
+            ];
+
+            const leanTeam = [
+                { role: "Project Owner", icon: "target", tasks: ["อนุมัติงบประมาณ", "กำหนด Margin", "ดูแลภาพรวมบริหาร"] },
+                { role: "Sales Consultant", icon: "briefcase", tasks: ["แนะนำแบบบ้าน", "ปิดการขาย Package", "ประสานทีมติดตั้ง"] },
+                { role: "Supply Chain Master", icon: "package", tasks: ["คัดเลือกวัสดุสต็อก", "ทำราคากลาง BOM", "ดูแลการจัดส่งวัสดุ"] }
+            ];
+
+            return (
+                <div className="min-h-screen">
+                    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                            <div className="bg-blue-600 p-2 rounded-lg text-white">
+                                <Icon name="building-2" size={20} />
+                            </div>
+                            <div>
+                                <h1 className="font-bold text-lg leading-tight text-blue-900 uppercase">KTM Civil x MUANG WASADU</h1>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Co-Development Platform</p>
+                            </div>
+                        </div>
+                        <div className="hidden md:flex gap-1 bg-slate-100 p-1 rounded-xl">
+                            {['proposal', 'moodboard', 'team', 'models'].map(tab => (
+                                <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${activeTab === tab ? 'bg-white shadow text-blue-600' : 'text-slate-500 hover:text-slate-700'}`}>
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+                    </nav>
+
+                    <header className="bg-gradient-to-br from-blue-900 to-indigo-900 text-white px-6 py-24 text-center">
+                        <div className="max-w-4xl mx-auto">
+                            <span className="inline-block px-4 py-1.5 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-200 text-xs font-bold uppercase tracking-widest mb-6">Proposal 2026</span>
+                            <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tight text-white">Co-design <br/><span className="text-blue-400">บ้านสำเร็จรูป</span></h2>
+                            <p className="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto opacity-90 leading-relaxed font-light">
+                                ความร่วมมือระหว่าง <span className="font-bold">ผู้ผลิตและจำหน่ายวัสดุ</span> กับ <span className="font-bold">วิศวกรและนักออกแบบ KTM Civil</span>
+                            </p>
+                        </div>
+                    </header>
+
+                    <main className="max-w-6xl mx-auto px-6 py-16">
+                        {activeTab === 'proposal' && (
+                            <div className="grid md:grid-cols-2 gap-8">
+                                <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                                    <h4 className="font-bold text-red-600 mb-6 flex items-center gap-2 uppercase tracking-wider text-sm">Pain Points ที่เราแก้</h4>
+                                    <ul className="space-y-4">
+                                        <li className="flex gap-3 text-slate-600 text-sm"><Icon name="chevron-right" size={16} className="text-red-600 shrink-0 mt-0.5" /><span>ค่าขนส่งบ้านสำเร็จรูปเดิมแพงเกินความจำเป็น</span></li>
+                                        <li className="flex gap-3 text-slate-600 text-sm"><Icon name="chevron-right" size={16} className="text-red-600 shrink-0 mt-0.5" /><span>หน้างานเข้าลำบาก รถเครนใหญ่เข้าไม่ได้</span></li>
+                                    </ul>
+                                </div>
+                                <div className="bg-blue-600 p-8 rounded-3xl text-white shadow-xl">
+                                    <h4 className="font-bold mb-6 flex items-center gap-2 uppercase tracking-wider text-sm text-blue-200">Shared Value</h4>
+                                    <ul className="space-y-4">
+                                        <li className="flex gap-3 text-sm"><Icon name="check-circle-2" size={18} className="text-blue-300 shrink-0 mt-0.5" /><span><b>เมืองวัสดุ:</b> เพิ่มยอดขายวัสดุเป็นชุด และได้ Margin สูงขึ้น</span></li>
+                                        <li className="flex gap-3 text-sm"><Icon name="check-circle-2" size={18} className="text-blue-300 shrink-0 mt-0.5" /><span><b>KTM Civil:</b> ขยายฐานการติดตั้งโดยมีแหล่ง Supply ที่รวดเร็ว</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'moodboard' && (
+                            <div className="space-y-16">
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    {personas.map((p, i) => (
+                                        <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 text-center">
+                                            <Icon name={p.icon} size={32} className={p.color + " mb-4 mx-auto"} />
+                                            <h5 className="font-bold mb-2">{p.title}</h5>
+                                            <p className="text-xs text-slate-500 mb-4">{p.desc}</p>
+                                            <div className="text-[10px] text-left border-t pt-4 space-y-1">
+                                                {p.needs.map((n, idx) => <div key={idx} className="flex gap-2 items-center text-slate-400">• {n}</div>)}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'team' && (
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {leanTeam.map((m, i) => (
+                                    <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 flex flex-col items-center text-center">
+                                        <Icon name={m.icon} size={32} className="text-blue-600 mb-6" />
+                                        <h4 className="font-bold text-lg mb-4">{m.role}</h4>
+                                        <ul className="text-xs text-left w-full space-y-2 text-slate-500 border-t pt-4">
+                                            {m.tasks.map((t, idx) => <li key={idx} className="flex gap-2">• {t}</li>)}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {activeTab === 'models' && (
+                            <div className="space-y-12">
+                                {skeletonGroups.map((g, i) => (
+                                    <div key={i}>
+                                        <h4 className="font-bold mb-6 border-b pb-2 text-slate-900 uppercase tracking-widest text-xs flex gap-2 items-center">
+                                            <Icon name="layers" size={14} className="text-blue-600" /> {g.title}
+                                        </h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            {g.items.map((item, idx) => (
+                                                <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-100 text-center hover:border-blue-400 transition-colors">
+                                                    <h5 className="font-bold text-slate-800 mb-1">{item.name}</h5>
+                                                    <p className="text-blue-600 font-mono text-xs">{item.size}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                                <div className="bg-slate-100 p-6 rounded-2xl text-[10px] text-slate-500 italic">
+                                    หมายเหตุ: ข้อมูลขนาดเป็นเพียง Reference เบื้องต้น รายละเอียดจริงจะสรุปตามแบบ BOM ร่วมกับเมืองวัสดุอีกครั้ง
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    <footer className="bg-slate-900 text-white py-12 px-6 text-center">
+                        <p className="text-xs text-slate-500 uppercase tracking-[0.3em]">KTM Civil x Muang Wasadu © 2026</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
